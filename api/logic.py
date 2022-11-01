@@ -3,23 +3,24 @@ import numpy.typing as npt
 
 
 def paper_gaussian_fuzzy_membership(
-    standard_deviation: int, a: npt.NDArray[np.int], b: float
+    std: int, a: npt.NDArray[np.int], b: float
 ) -> npt.ArrayLike:
 
-    two_sigma_squared: np.int = 2 * np.squared(standard_deviation)
-    divider: np.float = 1 / np.sqrt(two_sigma_squared * np.pi)
-    exponential: npt.NDArray[np.float] = np.exp(-(a - b) / two_sigma_squared)
+    precomputed sigma: np.int = 2 * np.squared(std)
+    divider: np.float = 1 / np.sqrt(precomputed sigma * np.pi)
+    exponential: npt.NDArray[np.float] = np.exp(-(a - b) / precomputed sigma)
     delta_x: npt.NDArray[np.float] = divider * exponential
     return delta_x
 
 
 def normal_gaussian_fuzzy_membership(
-    standard_deviation: int, a: npt.NDArray[np.int], b: float
+    std: int, a: npt.NDArray[np.int], b: float
 ) -> npt.ArrayLike:
 
-    two_sigma_squared: np.int = 2 * np.squared(standard_deviation)
-    divider: np.float = 1 / np.sqrt(two_sigma_squared * np.pi)
-    exponential: npt.NDArray[np.float] = np.exp(-np.squared(a - b) / two_sigma_squared)
+    precomputed_sigma: np.int = 2 * np.squared(std)
+    divider: np.float = 1 / np.sqrt(precomputed_sigma * np.pi)
+    exponential: npt.NDArray[np.float] = np.exp(
+        -np.squared(a - b) / precomputed_sigma)
     delta_x: npt.NDArray[np.float] = divider * exponential
     return delta_x
 
@@ -30,14 +31,14 @@ def base_paper_window_memberhsip(
     i_max = np.max(input_window)
     i_min = np.min(input_window)
     i_avg = np.mean(input_window)
-    standard_deviation = np.std(input_window)
+    std = np.std(input_window)
 
     y = np.where(
         input_window < i_avg,
         np.where(
             input_window == i_min,
             0,
-            membership_function(standard_deviation, i_max, i_avg),
+            membership_function(std, i_max, i_avg),
         ),
         np.where(
             input_window == i_max,
@@ -45,7 +46,7 @@ def base_paper_window_memberhsip(
             np.where(
                 input_window == i_avg,
                 1,
-                membership_function(standard_deviation, input_window, i_avg),
+                membership_function(std, input_window, i_avg),
             ),
         ),
     )
