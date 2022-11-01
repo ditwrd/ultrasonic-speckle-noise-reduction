@@ -6,9 +6,9 @@ def paper_gaussian_fuzzy_membership(
     std: int, a: npt.NDArray[np.int], b: float
 ) -> npt.ArrayLike:
 
-    precomputed sigma: np.int = 2 * np.squared(std)
+    precomputed_sigma: np.int = 2 * np.square(std)
     divider: np.float = 1 / np.sqrt(precomputed sigma * np.pi)
-    exponential: npt.NDArray[np.float] = np.exp(-(a - b) / precomputed sigma)
+    exponential: npt.NDArray[np.float] = np.exp(-(a - b) / precomputed_sigma)
     delta_x: npt.NDArray[np.float] = divider * exponential
     return delta_x
 
@@ -17,10 +17,10 @@ def normal_gaussian_fuzzy_membership(
     std: int, a: npt.NDArray[np.int], b: float
 ) -> npt.ArrayLike:
 
-    precomputed_sigma: np.int = 2 * np.squared(std)
+    precomputed_sigma: np.int = 2 * np.square(std)
     divider: np.float = 1 / np.sqrt(precomputed_sigma * np.pi)
     exponential: npt.NDArray[np.float] = np.exp(
-        -np.squared(a - b) / precomputed_sigma)
+        -np.square(a - b) / precomputed_sigma)
     delta_x: npt.NDArray[np.float] = divider * exponential
     return delta_x
 
