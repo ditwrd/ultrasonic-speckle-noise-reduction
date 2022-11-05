@@ -1,6 +1,5 @@
 import numpy as np
 import numpy.typing as npt
-from PIL import Image
 
 
 def normal_gaussian_fuzzy_membership(
