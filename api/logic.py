@@ -2,7 +2,7 @@ import numpy as np
 import numpy.typing as npt
 
 
-def normal_gaussian_fuzzy_membership(
+def _normal_gaussian_fuzzy_membership(
     std: int, a: npt.NDArray[np.int], b: float
 ) -> npt.NDArray[np.float_]:
 
@@ -18,12 +18,12 @@ def normal_gaussian_fuzzy_membership(
     return delta_x
 
 
-def window_membership(image_window: npt.NDArray[np.int_]) -> npt.ArrayLike:
+def _window_membership(image_window: npt.NDArray[np.int_]) -> npt.ArrayLike:
     i_avg: np.float_ = np.mean(image_window)
     std: np.float_ = np.std(image_window)
 
     # Calculate fuzzy membership
-    membership = normal_gaussian_fuzzy_membership(std, image_window, i_avg)
+    membership = _normal_gaussian_fuzzy_membership(std, image_window, i_avg)
     # Get the 2D coordinate of the max value
     row_max, col_max = np.where(membership == membership.max())
     # Translate the coord from membership to the image window
@@ -45,7 +45,7 @@ def gaussian_fuzzy_filter(
     # For loop is unoptimizable due to the fact that the process seems to be  sequential
     for i_row in range(n_row):
         for i_col in range(n_col):
-            image_array[i_row, i_col] = window_membership(
+            image_array[i_row, i_col] = _window_membership(
                 padded_image[i_row : i_row + width, i_col : i_col + width]
             )
 
