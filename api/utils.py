@@ -11,5 +11,5 @@ def open_image(image_buffer):
     """
     rgba_image = Image.open(image_buffer)
     grayscale_image = ImageOps.grayscale(rgba_image)
-    grayscale_image_array = np.asarray(grayscale_image)
+    grayscale_image_array = np.array(grayscale_image)
     return grayscale_image_array
