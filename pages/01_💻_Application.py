@@ -17,7 +17,8 @@ def main():
     uploaded_image = st.file_uploader("", type=["jpg", "png", "jpeg"])
     if uploaded_image is not None:
         with st.form("Filter Input"):
-            padding_mode = st.selectbox(
+            ca, cb = st.columns(2)
+            padding_mode = ca.selectbox(
                 "Padding Mode",
                 [
                     "constant",
@@ -33,7 +34,7 @@ def main():
                     "wrap",
                 ],
             )
-            kernel_width = st.number_input(
+            kernel_width = cb.number_input(
                 "Kernel Width", min_value=3, max_value=101, step=2, value=3
             )
 
@@ -56,6 +57,8 @@ def main():
                 c3.subheader("Noise")
                 c3.image(noise, use_column_width=True)
 
+                psnr = logic.psnr(image, filtered_image)
+                st.markdown(f"PSNR = {psnr} dB")
                 image_comparison(
                     image,
                     filtered_image,

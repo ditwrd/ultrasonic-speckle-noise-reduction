@@ -46,3 +46,12 @@ def gaussian_fuzzy_filter(
                 padded_image[i_row : i_row + width, i_col : i_col + width]
             )
     return image_array_processed
+
+
+def psnr(original, filtered):
+    mse = np.mean((original - filtered) ** 2)
+    if mse == 0:
+        return 100
+    max_pixel = 255.0
+    psnr = 20 * np.log10(max_pixel / np.sqrt(mse))
+    return psnr
