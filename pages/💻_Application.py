@@ -18,6 +18,7 @@ def main():
     if uploaded_image is not None:
         form = st.form("Filter Input")
         ca, cb = form.columns(2)
+        c1, c2, c3 = st.columns(3)
         padding_mode = ca.selectbox(
             "Padding Mode",
             [
@@ -41,8 +42,6 @@ def main():
         submit_button = form.form_submit_button("Process Image")
 
         if submit_button:
-
-            c1, c2, c3 = st.columns(3)
 
             image = utils.open_image(uploaded_image)
             c1.subheader("Original Image")
