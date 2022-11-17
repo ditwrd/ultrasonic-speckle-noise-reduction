@@ -15,24 +15,53 @@ def main():
 
     # Memunculkan tombol file upload
     uploaded_image = st.file_uploader("", type=["jpg", "png", "jpeg"])
-
     if uploaded_image is not None:
-        c1, c2, c3 = st.columns(3)
+        with st.form("Filter Input"):
+            padding_mode = st.selectbox(
+                "Padding Mode",
+                [
+                    "constant",
+                    "edge",
+                    "linear_ramp",
+                    "maximum",
+                    "minimum",
+                    "mean",
+                    "median",
+                    "minimum",
+                    "reflect",
+                    "symmetric",
+                    "wrap",
+                ],
+            )
+            kernel_width = st.number_input(
+                "Kernel Width", min_value=3, max_value=101, step=2, value=3
+            )
 
-        image = utils.open_image(uploaded_image)
-        c1.subheader("Original Image")
-        c1.image(image, width=300)
-        filtered_image = logic.gaussian_fuzzy_filter("abc", image, 3)
-        c2.subheader("Filtered Image")
-        c2.image(filtered_image, width=300)
+            submit_button = st.form_submit_button("Process Image")
 
-        noise = image - filtered_image
-        c3.subheader("Noise")
-        c3.image(noise, width=300)
+            if submit_button:
 
-        image_comparison(
-            image, filtered_image, label1="Original Image", label2="Filtered Image"
-        )
+                c1, c2, c3 = st.columns(3)
+
+                image = utils.open_image(uploaded_image)
+                c1.subheader("Original Image")
+                c1.image(image, use_column_width=True)
+                filtered_image = logic.gaussian_fuzzy_filter(
+                    padding_mode, image, kernel_width
+                )
+                c2.subheader("Filtered Image")
+                c2.image(filtered_image, use_column_width=True)
+
+                noise = image - filtered_image
+                c3.subheader("Noise")
+                c3.image(noise, use_column_width=True)
+
+                image_comparison(
+                    image,
+                    filtered_image,
+                    label1="Original Image",
+                    label2="Filtered Image",
+                )
 
 
 if __name__ == "__main__":
